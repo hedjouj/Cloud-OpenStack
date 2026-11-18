@@ -256,8 +256,7 @@ Une source de type groupe est **dynamique** : elle suit toutes les instances mem
 ## Incidents rencontrés et résolutions
 
 | # | Symptôme | Cause | Résolution |
-|---|---|---|---|
-| 1 | « Impossible de générer la paire de clés » | Bouton *Créer une paire de clés* utilisé, et empreinte `SHA256:…` collée au lieu de la clé publique | *Importer une clé publique* avec le contenu complet du `.pub` |
+|---|---|---|---| |
 | 2 | Instances en **Erreur** — `No valid host was found` (500) | Hyperviseurs saturés (toute la classe lance ses VM en même temps) | Suppression puis relance **une instance à la fois** |
 | 3 | « Pas de port disponible » à l'association d'IP flottante | Conséquence du n°2 : instances en erreur, donc sans port réseau | Résolu avec le n°2 |
 | 4 | `Permission denied (publickey)` + demande de passphrase | Clé `id_ed25519` protégée par une passphrase inconnue | Nouvelle clé dédiée `id_ed25519_openstack`, import dans `cle-messaoui`, recréation des instances |
