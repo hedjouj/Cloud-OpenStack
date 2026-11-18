@@ -1,4 +1,4 @@
-# ☁️ Module Cloud — OpenStack · TP1 & TP2
+# ☁️ Module Cloud — OpenStack
 
 > **Formation** : Administrateur d'Infrastructures Sécurisées (AIS) — Bac+3
 > **Auteur** : Elhadj Messaoui
