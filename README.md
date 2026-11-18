@@ -1,4 +1,4 @@
-# ☁️ Module Cloud — OpenStack
+# ☁️ Module Cloud — OpenStack · TP1 & TP2
 
 > **Formation** : Administrateur d'Infrastructures Sécurisées (AIS) — Bac+3
 > **Auteur** : Elhadj Messaoui
@@ -256,21 +256,21 @@ Une source de type groupe est **dynamique** : elle suit toutes les instances mem
 ## Incidents rencontrés et résolutions
 
 | # | Symptôme | Cause | Résolution |
-|---|---|---|---| |
-| 2 | Instances en **Erreur** — `No valid host was found` (500) | Hyperviseurs saturés (toute la classe lance ses VM en même temps) | Suppression puis relance **une instance à la fois** |
-| 3 | « Pas de port disponible » à l'association d'IP flottante | Conséquence du n°2 : instances en erreur, donc sans port réseau | Résolu avec le n°2 |
-| 4 | `Permission denied (publickey)` + demande de passphrase | Clé `id_ed25519` protégée par une passphrase inconnue | Nouvelle clé dédiée `id_ed25519_openstack`, import dans `cle-messaoui`, recréation des instances |
-| 5 | Connexion en `messa@…` au lieu de `ubuntu@…` | Fichier `~/.ssh/config` enregistré en `config.txt` par Notepad | Recréation via `Set-Content -Encoding ascii`, vérification avec `ssh -G` |
-| 6 | `E: Unable to locate package ncat` | Cache `apt` vide sur une image cloud neuve | `sudo apt update` avant l'installation |
-| 7 | Le bastion ping et joint le port 5432 de `tb-db` · SSH direct possible sur `tb-web` | Groupe `default` resté attaché aux instances (trafic libre entre membres + SSH depuis le VPN) | Retrait de `default` sur les trois instances |
-| 8 | Bastion injoignable après retrait de `default` | L'accès SSH reposait sur `default`, pas sur `sg-bastion` | Vérification et correction de `sg-bastion` (TCP 22 entrant depuis `172.29.0.0/16`) |
+|---|---|---|---|
+| 1 | Instances en **Erreur** — `No valid host was found` (500) | Hyperviseurs saturés (toute la classe lance ses VM en même temps) | Suppression puis relance **une instance à la fois** |
+| 2 | « Pas de port disponible » à l'association d'IP flottante | Conséquence du n°1 : instances en erreur, donc sans port réseau | Résolu avec le n°1 |
+| 3 | `Permission denied (publickey)` + demande de passphrase | Clé `id_ed25519` protégée par une passphrase inconnue | Nouvelle clé dédiée `id_ed25519_openstack`, import dans `cle-messaoui`, recréation des instances |
+| 4 | Connexion en `messa@…` au lieu de `ubuntu@…` | Fichier `~/.ssh/config` enregistré en `config.txt` par Notepad | Recréation via `Set-Content -Encoding ascii`, vérification avec `ssh -G` |
+| 5 | `E: Unable to locate package ncat` | Cache `apt` vide sur une image cloud neuve | `sudo apt update` avant l'installation |
+| 6 | Le bastion ping et joint le port 5432 de `tb-db` · SSH direct possible sur `tb-web` | Groupe `default` resté attaché aux instances (trafic libre entre membres + SSH depuis le VPN) | Retrait de `default` sur les trois instances |
+| 7 | Bastion injoignable après retrait de `default` | L'accès SSH reposait sur `default`, pas sur `sg-bastion` | Vérification et correction de `sg-bastion` (TCP 22 entrant depuis `172.29.0.0/16`) |
 
 ---
 
 ## Leçons retenues
 
 - **Les groupes de sécurité s'additionnent** : la règle la plus permissive l'emporte. Un groupe oublié (`default`) suffit à casser toute la segmentation.
-- **Toujours tester ce qui doit être bloqué**, pas seulement ce qui doit passer : sans les tests négatifs, l'erreur n°7 serait passée inaperçue.
+- **Toujours tester ce qui doit être bloqué**, pas seulement ce qui doit passer : sans les tests négatifs, l'erreur n°6 serait passée inaperçue.
 - Le **bastion** est le seul point d'entrée : la clé privée reste sur le poste, le rebond `ssh -J` évite de la copier sur le bastion.
 - Une ressource flottante (IP) **vit indépendamment** de l'instance : il faut la libérer explicitement.
 - La capacité d'un cloud partagé n'est pas infinie : `No valid host` est un problème opérateur, pas de quota.
